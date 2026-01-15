@@ -1,0 +1,23 @@
+CREATE DATABASE IF NOT EXISTS bull_store DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE bull_store;
+
+CREATE TABLE IF NOT EXISTS products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    sku VARCHAR(60) NOT NULL UNIQUE,
+    category VARCHAR(60) DEFAULT '',
+    unit VARCHAR(20) DEFAULT '',
+    price DECIMAL(10,2) DEFAULT 0,
+    stock INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS stock_movements (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    type ENUM('in', 'out') NOT NULL,
+    quantity INT NOT NULL,
+    note VARCHAR(255) DEFAULT '',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
